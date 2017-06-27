@@ -230,7 +230,7 @@ def rmdir(folder):
 VERSION_FILE_PATH = 'cocos/cocos2d.cpp'
 VERSION_PATTERN = r".*return[ \t]+\"(.*)\";"
 def get_engine_version(engine_path):
-    ret = None
+    ret = ''
 
     try:
         version_file = os.path.join(engine_path, VERSION_FILE_PATH)
