@@ -35,7 +35,7 @@ def check_jdk_version():
 
 def gen_buildxml(project_dir, project_json, output_dir, build_opts):
     # get engine dir (not real)
-    engineDir = project_json["engineDir"]
+    engineDir = os.path.expandvars(project_json["engineDir"])
     # get real engine dir
     engine_dir = os.path.normpath(os.path.join(project_dir, engineDir))
     # get real publish dir

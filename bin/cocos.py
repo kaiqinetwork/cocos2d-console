@@ -729,7 +729,7 @@ def copy_files_in_dir(src, dst):
 
 
 def copy_files_with_config(config, src_root, dst_root):
-    src_dir = config["from"]
+    src_dir = os.path.expandvars(config["from"])
     dst_dir = config["to"]
 
     src_dir = os.path.join(src_root, src_dir)

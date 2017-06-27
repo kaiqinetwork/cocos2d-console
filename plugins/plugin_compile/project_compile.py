@@ -1213,7 +1213,7 @@ class CCPluginCompile(cocos.CCPlugin):
         f = open(os.path.join(project_dir, "project.json"))
         project_json = json.load(f)
         f.close()
-        engine_dir = os.path.join(project_json["engineDir"])
+        engine_dir = os.path.expandvars(project_json["engineDir"])
         realEngineDir = os.path.normpath(os.path.join(project_dir, engine_dir))
         publish_dir = os.path.normpath(os.path.join(project_dir, output_dir, CCPluginCompile.WEB_PLATFORM_FOLDER_NAME))
 
