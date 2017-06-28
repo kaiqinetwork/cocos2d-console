@@ -114,6 +114,8 @@ class CCPluginCompile(cocos.CCPlugin):
                            help=MultiLanguage.get_string('COMPILE_ARG_LUA_ENCRYPT_KEY'))
         group.add_argument("--lua-encrypt-sign", dest="lua_encrypt_sign",
                            help=MultiLanguage.get_string('COMPILE_ARG_LUA_ENCRYPT_SIGN'))
+        group.add_argument("--lua-luajit21", dest="lua_luajit21", action="store_true",
+                           help="")
 
         group = parser.add_argument_group(MultiLanguage.get_string('COMPILE_ARG_GROUP_TIZEN'))
         group.add_argument("--tizen-arch", dest="tizen_arch", default="x86", choices=[ "x86", "arm" ], help=MultiLanguage.get_string('COMPILE_ARG_TIZEN_ARCH'))
@@ -203,6 +205,7 @@ class CCPluginCompile(cocos.CCPlugin):
             self._lua_encrypt = args.lua_encrypt
             self._lua_encrypt_key = args.lua_encrypt_key
             self._lua_encrypt_sign = args.lua_encrypt_sign
+            self._lua_luajit21 = args.lua_luajit21
 
         self.end_warning = ""
         self._gen_custom_step_args()
@@ -366,6 +369,9 @@ class CCPluginCompile(cocos.CCPlugin):
         return self._mode == 'debug'
 
     def _remove_file_with_ext(self, work_dir, ext):
+        if not os.path.exists(work_dir):
+            return
+        
         file_list = os.listdir(work_dir)
         for f in file_list:
             full_path = os.path.join(work_dir, f)
@@ -377,7 +383,7 @@ class CCPluginCompile(cocos.CCPlugin):
                     os.remove(full_path)
 
     def compile_lua_scripts(self, src_dir, dst_dir, build_64):
-        if not self._project._is_lua_project():
+        if not self._project._is_lua_project() or not os.path.exists(src_dir):
             return False
 
         if not self._compile_script and not self._lua_encrypt:
@@ -401,6 +407,9 @@ class CCPluginCompile(cocos.CCPlugin):
                 add_para = "%s -b %s" % (add_para, self._lua_encrypt_sign)
 
             compile_cmd = "%s -e %s" % (compile_cmd, add_para)
+            
+        if self._lua_luajit21:
+            compile_cmd = "%s --luajit21" % compile_cmd
 
         # run compile command
         self._run_cmd(compile_cmd)

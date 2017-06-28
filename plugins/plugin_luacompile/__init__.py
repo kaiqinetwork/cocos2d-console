@@ -125,7 +125,7 @@ class CCPluginLuaCompile(cocos.CCPlugin):
         self._encryptkey = options.encryptkey
         self._encryptsign = options.encryptsign
         self._bytecode_64bit = options.bytecode_64bit
-        self._luajit_21 = options.luajit_21
+        self._luajit21 = options.luajit21
 
         self._luajit_exe_path = self.get_luajit_path()
         self._disable_compile = options.disable_compile
@@ -184,7 +184,7 @@ class CCPluginLuaCompile(cocos.CCPlugin):
         ret = None
         
         luajit_dir = "luajit-"
-        luajit_dir += "2.1" if self._luajit_21 else "2.0"
+        luajit_dir += "2.1" if self._luajit21 else "2.0"
         luajit_dir += "-"
         luajit_dir += "64bit" if self._bytecode_64bit else "32bit"
         if cocos.os_is_win32():
@@ -311,8 +311,8 @@ class CCPluginLuaCompile(cocos.CCPlugin):
         parser.add_argument("--bytecode-64bit",
                           action="store_true", dest="bytecode_64bit", default=False,
                           help=MultiLanguage.get_string('LUACOMPILE_ARG_BYTECODE_64BIT'))
-        parser.add_argument("--luajit-21",
-                          action="store_true", dest="luajit_21", default=False,
+        parser.add_argument("--luajit21",
+                          action="store_true", dest="luajit21", default=False,
                           help="")
 
         options = parser.parse_args(argv)
